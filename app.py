@@ -1,16 +1,12 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from tensorflow.keras.models import load_model
 import cv2
 import numpy as np
 
 app = Flask(__name__)
 
-# Load the model (adjust the path to your model)
+# Load the model (you need to adjust the path to your model)
 model = load_model('my_model.h5')
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 @app.route('/classify_image', methods=['POST'])
 def classify_image():
@@ -35,10 +31,7 @@ def classify_image():
             'predicted_class': predicted_class,
             'predicted_prob': float(predicted_prob)
         }
-
+        
         return jsonify(response), 200
     except Exception as e:
         return str(e), 500
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
